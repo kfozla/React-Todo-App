@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import "./TodoApp.css";
 
 export default function TodoApp() {
@@ -11,7 +17,11 @@ export default function TodoApp() {
         <Routes>
           <Route path="/" element={<LoginComponent />}></Route>
           <Route path="/login" element={<LoginComponent />}></Route>
-          <Route path="/welcome" element={<WelcomeCompnent />}></Route>
+          <Route
+            path="/welcome/:username"
+            element={<WelcomeCompnent />}
+          ></Route>
+          <Route path="*" element={<ErrorComponent />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
@@ -48,13 +58,14 @@ function LoginComponent() {
   function authenticate() {
     if (username == "kfozla" && password == "123") {
       setAuthenticationValue(true);
-      navigate("/welcome");
+      navigate("/welcome/" + username);
     } else {
       setAuthenticationValue(false);
     }
   }
   return (
     <div className="Login">
+      <h1>Todo App</h1>
       <MessageComponent></MessageComponent>
       <div className="LoginForm">
         <div>
@@ -86,8 +97,22 @@ function LoginComponent() {
 }
 
 function WelcomeCompnent() {
-  return <div className="Welcome">Welcome Componen</div>;
+  const params = useParams();
+  return (
+    <div className="Welcome">
+      {" "}
+      <h1>Welcome {params.username}</h1>{" "}
+    </div>
+  );
 }
 function ErrorComponent() {
-  return <div className="ErrorComponent"></div>;
+  const navigate = useNavigate();
+  return (
+    <div className="ErrorComponent">
+      <h1>Wrong Destination</h1>
+      <Button onClick={() => navigate("/login")}>
+        Click Here For Login Page
+      </Button>
+    </div>
+  );
 }
