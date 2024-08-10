@@ -22,6 +22,7 @@ export default function TodoApp() {
             element={<WelcomeCompnent />}
           ></Route>
           <Route path="*" element={<ErrorComponent />}></Route>
+          <Route path="/todos" element={<ListTodo />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
@@ -113,6 +114,35 @@ function ErrorComponent() {
       <Button onClick={() => navigate("/login")}>
         Click Here For Login Page
       </Button>
+    </div>
+  );
+}
+function ListTodo() {
+  const todos = [
+    { id: 1, description: "Learn Aws" },
+    { id: 2, description: "Learn Fullstack" },
+    { id: 3, description: "Learn Frontend" },
+    { id: 4, description: "Learn Azure" },
+  ];
+  return (
+    <div className="ListTodoComponent">
+      <h1>Your Todo List</h1>
+      <table>
+        <thead>
+          <tr>
+            <td>id</td>
+            <td>description</td>
+          </tr>
+        </thead>
+        <tbody>
+          {todos.map((todo) => (
+            <tr>
+              <td>{todo.id}</td>
+              <td>{todo.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
