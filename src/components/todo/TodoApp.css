@@ -1,0 +1,35 @@
+label {
+  padding: 5px;
+  font-size: 20px;
+  display: block;
+}
+.LoginForm {
+  text-align: left;
+}
+.btn {
+  margin-top: 10px;
+  float: right;
+}
+.int {
+  width: 100%;
+  font-size: 24px;
+}
+.MessageComponent {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.successfullAuthentication {
+  background-color: #e7f5ff; /* Light blue background */
+  color: #1c7ed6; /* Blue text */
+  border: 1px solid #a5d8ff; /* Blue border */
+}
+
+.authenticationFailed {
+  background-color: #ffe3e3; /* Light red background */
+  color: #c92a2a; /* Red text */
+  border: 1px solid #ffa8a8; /* Red border */
+}
