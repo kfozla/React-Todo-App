@@ -99,10 +99,12 @@ function LoginComponent() {
 
 function WelcomeCompnent() {
   const params = useParams();
+  const navigate = useNavigate();
   return (
     <div className="Welcome">
       {" "}
       <h1>Welcome {params.username}</h1>{" "}
+      <Button onClick={() => navigate("/todos")}>Manage Your Todos</Button>
     </div>
   );
 }
@@ -118,31 +120,55 @@ function ErrorComponent() {
   );
 }
 function ListTodo() {
+  const today = new Date();
+  const targetDate = new Date(
+    today.getFullYear() + 12,
+    today.getMonth(),
+    today.getDate()
+  );
   const todos = [
-    { id: 1, description: "Learn Aws" },
-    { id: 2, description: "Learn Fullstack" },
-    { id: 3, description: "Learn Frontend" },
-    { id: 4, description: "Learn Azure" },
+    { id: 1, description: "Learn Aws", done: false, targetDate: targetDate },
+    {
+      id: 2,
+      description: "Learn Fullstack",
+      done: true,
+      targetDate: targetDate,
+    },
+    {
+      id: 3,
+      description: "Learn",
+      done: false,
+      targetDate: targetDate,
+    },
+    { id: 4, description: "Learn Azure", done: false, targetDate: targetDate },
   ];
   return (
     <div className="ListTodoComponent">
       <h1>Your Todo List</h1>
-      <table>
+      <table className="table">
         <thead>
           <tr>
-            <td>id</td>
-            <td>description</td>
+            <td>Id</td>
+            <td>Description</td>
+            <td>Is done</td>
+            <td>Target Date</td>
           </tr>
         </thead>
         <tbody>
           {todos.map((todo) => (
-            <tr>
+            <tr key={todo.id}>
               <td>{todo.id}</td>
               <td>{todo.description}</td>
+              <td>{todo.done.toString()}</td>
+              <td>{todo.targetDate.toDateString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
+}
+
+function HeaderComponent() {
+  return <div className="header"></div>;
 }
