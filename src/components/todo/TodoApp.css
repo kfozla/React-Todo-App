@@ -49,7 +49,7 @@ label {
 
 .table th,
 .table td {
-  padding: 1rem;
+  padding: 10px;
   padding-left: 2rem;
   padding-right: 2rem;
   text-align: center;
