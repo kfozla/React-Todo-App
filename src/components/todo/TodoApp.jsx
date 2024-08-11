@@ -7,6 +7,7 @@ import {
   Route,
   useNavigate,
   useParams,
+  Link,
 } from "react-router-dom";
 import "./TodoApp.css";
 
@@ -14,6 +15,7 @@ export default function TodoApp() {
   return (
     <div className="TodoApp">
       <BrowserRouter>
+        <HeaderComponent></HeaderComponent>
         <Routes>
           <Route path="/" element={<LoginComponent />}></Route>
           <Route path="/login" element={<LoginComponent />}></Route>
@@ -23,6 +25,10 @@ export default function TodoApp() {
           ></Route>
           <Route path="*" element={<ErrorComponent />}></Route>
           <Route path="/todos" element={<ListTodo />}></Route>
+          <Route
+            path="/logout"
+            element={<LogOutComponent></LogOutComponent>}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>
@@ -66,9 +72,8 @@ function LoginComponent() {
   }
   return (
     <div className="Login">
-      <h1>Todo App</h1>
-      <MessageComponent></MessageComponent>
       <div className="LoginForm">
+        <MessageComponent></MessageComponent>
         <div>
           <label>User Name:</label>
           <Input
@@ -103,8 +108,15 @@ function WelcomeCompnent() {
   return (
     <div className="Welcome">
       {" "}
-      <h1>Welcome {params.username}</h1>{" "}
-      <Button onClick={() => navigate("/todos")}>Manage Your Todos</Button>
+      <h1 style={{ margin: "20px", display: "inline-block" }}>
+        Welcome {params.username}
+      </h1>{" "}
+      <Button
+        onClick={() => navigate("/todos")}
+        style={{ display: "block", margin: "0 auto" }}
+      >
+        Manage Your Todos
+      </Button>
     </div>
   );
 }
@@ -144,7 +156,9 @@ function ListTodo() {
   ];
   return (
     <div className="ListTodoComponent">
-      <h1>Your Todo List</h1>
+      <h1 style={{ marginBottom: "20px", display: "inline-block" }}>
+        Your Todo List
+      </h1>
       <table className="table">
         <thead>
           <tr>
@@ -170,5 +184,33 @@ function ListTodo() {
 }
 
 function HeaderComponent() {
-  return <div className="header"></div>;
+  const navigate = useNavigate();
+  return (
+    <div className="header">
+      <nav>
+        <div>
+          <h1>Todo App</h1>
+          <Link className="lnk" to="/login">
+            Home
+          </Link>
+          <Link to="/todos">Todos</Link>
+          <Button className="navbtn" onClick={() => navigate("/logout")}>
+            Log Out
+          </Button>
+          <Button className="navbtn" onClick={() => navigate("/login")}>
+            Log In
+          </Button>
+        </div>
+      </nav>
+    </div>
+  );
+}
+function LogOutComponent() {
+  return (
+    <div>
+      <h1 style={{ margin: "20px", display: "inline-block" }}>
+        Logged Out Succesfully
+      </h1>
+    </div>
+  );
 }

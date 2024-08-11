@@ -4,7 +4,7 @@ import TodoApp from "./components/todo/todoApp";
 
 function App() {
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <TodoApp></TodoApp>
     </div>
   );

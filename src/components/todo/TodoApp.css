@@ -3,16 +3,23 @@ label {
   font-size: 20px;
   display: block;
 }
+.Login {
+  margin: 0 auto;
+  text-align: center;
+}
 .LoginForm {
-  text-align: left;
+  display: inline-block;
+  margin-top: 20px;
 }
 .btn {
   margin-top: 10px;
   float: right;
 }
+
 .int {
-  width: 100%;
+  width: 240px;
   font-size: 24px;
+  margin: 0 auto;
 }
 .MessageComponent {
   margin-bottom: 20px;
@@ -26,15 +33,22 @@ label {
   background-color: #e7f5ff; /* Light blue background */
   color: #1c7ed6; /* Blue text */
   border: 1px solid #a5d8ff; /* Blue border */
+  width: 100%;
+  height: 40px;
+  padding-top: 10px;
 }
 
 .authenticationFailed {
   background-color: #ffe3e3; /* Light red background */
   color: #c92a2a; /* Red text */
   border: 1px solid #ffa8a8; /* Red border */
+  width: 100%;
+  height: 40px;
+  padding-top: 10px;
 }
 .table {
-  width: 100%;
+  margin: 0 auto;
+  width: 50%;
   border-collapse: collapse;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
@@ -63,4 +77,30 @@ label {
 .table td,
 .table th {
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+.header {
+  width: 100%;
+  float: left;
+  margin-bottom: 20px;
+  background-color: #1c1c1c;
+}
+.header nav {
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.header nav h1 {
+  display: inline-block;
+  font-size: 32px;
+  margin: 20px;
+}
+.header nav a {
+  margin: 20px;
+  color: white;
+  font-size: 24px;
+}
+.navbtn {
+  float: right;
+  margin: 20px;
 }
