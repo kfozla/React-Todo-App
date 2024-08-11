@@ -8,29 +8,39 @@ import {
   useNavigate,
   useParams,
   Link,
+  Navigate,
+  Outlet,
 } from "react-router-dom";
 import "./TodoApp.css";
+import AuthProvider, { useAuth } from "./security/AuthContext";
+
+function AuthenticatedRoute({ children }) {
+  const authContext = useAuth();
+  if (authContext.isAuthenticated) {
+    return <Outlet />;
+  } else return <Navigate to="/"></Navigate>;
+}
 
 export default function TodoApp() {
   return (
     <div className="TodoApp">
-      <BrowserRouter>
-        <HeaderComponent></HeaderComponent>
-        <Routes>
-          <Route path="/" element={<LoginComponent />}></Route>
-          <Route path="/login" element={<LoginComponent />}></Route>
-          <Route
-            path="/welcome/:username"
-            element={<WelcomeCompnent />}
-          ></Route>
-          <Route path="*" element={<ErrorComponent />}></Route>
-          <Route path="/todos" element={<ListTodo />}></Route>
-          <Route
-            path="/logout"
-            element={<LogOutComponent></LogOutComponent>}
-          ></Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <HeaderComponent />
+          <Routes>
+            <Route path="/" element={<LoginComponent />} />
+            <Route path="/login" element={<LoginComponent />} />
+            <Route path="/logout" element={<LogOutComponent />} />
+            <Route path="*" element={<ErrorComponent />} />
+
+            {/* All protected routes are now under one AuthenticatedRoute */}
+            <Route element={<AuthenticatedRoute />}>
+              <Route path="/welcome/:username" element={<WelcomeComponent />} />
+              <Route path="/todos" element={<ListTodo />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }
@@ -39,6 +49,7 @@ function LoginComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [authenticationValue, setAuthenticationValue] = useState(null);
+  const authContext = useAuth();
   const navigate = useNavigate();
 
   function MessageComponent() {
@@ -63,11 +74,13 @@ function LoginComponent() {
     setPassword(e.target.value);
   }
   function authenticate() {
-    if (username == "kfozla" && password == "123") {
+    if (username === "kfozla" && password === "123") {
+      authContext.setAuthenticated(true);
       setAuthenticationValue(true);
       navigate("/welcome/" + username);
     } else {
       setAuthenticationValue(false);
+      authContext.setAuthenticated(false);
     }
   }
   return (
@@ -102,7 +115,7 @@ function LoginComponent() {
   );
 }
 
-function WelcomeCompnent() {
+function WelcomeComponent() {
   const params = useParams();
   const navigate = useNavigate();
   return (
@@ -185,6 +198,12 @@ function ListTodo() {
 
 function HeaderComponent() {
   const navigate = useNavigate();
+  const authContext = useAuth();
+  function logout() {
+    navigate("/logout");
+    authContext.setAuthenticated(false);
+  }
+  console.log(authContext.isAuthenticated);
   return (
     <div className="header">
       <nav>
@@ -194,12 +213,16 @@ function HeaderComponent() {
             Home
           </Link>
           <Link to="/todos">Todos</Link>
-          <Button className="navbtn" onClick={() => navigate("/logout")}>
-            Log Out
-          </Button>
-          <Button className="navbtn" onClick={() => navigate("/login")}>
-            Log In
-          </Button>
+          {authContext.isAuthenticated && (
+            <Button className="navbtn" onClick={logout}>
+              Log Out
+            </Button>
+          )}
+          {!authContext.isAuthenticated && (
+            <Button className="navbtn" onClick={() => navigate("/login")}>
+              Log In
+            </Button>
+          )}
         </div>
       </nav>
     </div>
