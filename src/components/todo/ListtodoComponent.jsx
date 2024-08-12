@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import "./TodoApp.css";
 import { retrieveTodos, retrieveTodo, deleteTodo } from "./api/TodoApiService";
 import { Button } from "../ui/button";
+import { useAuth } from "./security/AuthContext";
 
 export default function ListTodo() {
   const [todos, setTodos] = useState([]);
+  const authContext = useAuth();
 
   useEffect(() => {
     getTodos();
@@ -12,21 +14,21 @@ export default function ListTodo() {
     [];
 
   function getTodos() {
-    retrieveTodos("kfozla")
+    retrieveTodos(authContext.username)
       .then((response) => {
         setTodos(response.data);
       })
       .catch((error) => ("some error occured,", error));
   }
   function getTodo() {
-    retrieveTodo("kfozla", 1)
+    retrieveTodo(authContext.username, 1)
       .then((response) => {
         console.log(response.data);
       })
       .catch((error) => ("error occured", error));
   }
   function deleteTodoFunc(id) {
-    deleteTodo("kfozla", id)
+    deleteTodo(authContext.username, id)
       .then((response) => {
         console.log("deleted todo id: " + id);
       })

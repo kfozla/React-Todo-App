@@ -6,7 +6,6 @@ import "./TodoApp.css";
 import { useAuth } from "./security/AuthContext";
 
 export default function LoginComponent() {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [authenticationValue, setAuthenticationValue] = useState(null);
   const authContext = useAuth();
@@ -28,16 +27,16 @@ export default function LoginComponent() {
   }
 
   function handleOnchangeName(e) {
-    setUsername(e.target.value);
+    authContext.setUsername(e.target.value);
   }
   function handleOnchangePassword(e) {
     setPassword(e.target.value);
   }
   function authenticate() {
-    if (username === "kfozla" && password === "123") {
+    if (authContext.username === "kfozla" && password === "123") {
       authContext.setAuthenticated(true);
       setAuthenticationValue(true);
-      navigate("/welcome/" + username);
+      navigate("/welcome/" + authContext.username);
     } else {
       setAuthenticationValue(false);
       authContext.setAuthenticated(false);
@@ -52,7 +51,7 @@ export default function LoginComponent() {
           <Input
             type="text"
             className="int"
-            value={username}
+            value={authContext.username}
             onChange={handleOnchangeName}
           ></Input>
         </div>
