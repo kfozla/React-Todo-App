@@ -1,28 +1,37 @@
+import { useEffect, useState } from "react";
 import "./TodoApp.css";
+import { retrieveTodos, retrieveTodo, deleteTodo } from "./api/TodoApiService";
+import { Button } from "../ui/button";
 
 export default function ListTodo() {
-  const today = new Date();
-  const targetDate = new Date(
-    today.getFullYear() + 12,
-    today.getMonth(),
-    today.getDate()
-  );
-  const todos = [
-    { id: 1, description: "Learn Aws", done: false, targetDate: targetDate },
-    {
-      id: 2,
-      description: "Learn Fullstack",
-      done: true,
-      targetDate: targetDate,
-    },
-    {
-      id: 3,
-      description: "Learn",
-      done: false,
-      targetDate: targetDate,
-    },
-    { id: 4, description: "Learn Azure", done: false, targetDate: targetDate },
-  ];
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    getTodos();
+  }),
+    [];
+
+  function getTodos() {
+    retrieveTodos("kfozla")
+      .then((response) => {
+        setTodos(response.data);
+      })
+      .catch((error) => ("some error occured,", error));
+  }
+  function getTodo() {
+    retrieveTodo("kfozla", 1)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => ("error occured", error));
+  }
+  function deleteTodoFunc(id) {
+    deleteTodo("kfozla", id)
+      .then((response) => {
+        console.log("deleted todo id: " + id);
+      })
+      .catch((error) => ("error occured", error));
+  }
   return (
     <div className="ListTodoComponent">
       <h1 style={{ marginBottom: "20px", display: "inline-block" }}>
@@ -35,6 +44,7 @@ export default function ListTodo() {
             <td>Description</td>
             <td>Is done</td>
             <td>Target Date</td>
+            <td></td>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +53,10 @@ export default function ListTodo() {
               <td>{todo.id}</td>
               <td>{todo.description}</td>
               <td>{todo.done.toString()}</td>
-              <td>{todo.targetDate.toDateString()}</td>
+              <td>{todo.targetDate}</td>
+              <td>
+                <Button onClick={() => deleteTodoFunc(todo.id)}>Delete</Button>
+              </td>
             </tr>
           ))}
         </tbody>
