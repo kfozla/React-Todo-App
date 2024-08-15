@@ -13,11 +13,12 @@ import ErrorComponent from "./ErrorComponent";
 import ListTodo from "./ListtodoComponent";
 import HeaderComponent from "./HeaderComponent";
 import LogOutComponent from "./LogoutComponent";
+import UpdateTodoComponent from "./UpdateTodocomponent";
 
-function AuthenticatedRoute() {
+function AuthenticatedRoute({ children }) {
   const authContext = useAuth();
   if (authContext.isAuthenticated) {
-    return <Outlet />;
+    return children;
   } else return <Navigate to="/"></Navigate>;
 }
 
@@ -34,10 +35,30 @@ export default function TodoApp() {
             <Route path="*" element={<ErrorComponent />} />
 
             {/* All protected routes are now under one AuthenticatedRoute */}
-            <Route element={<AuthenticatedRoute />}>
-              <Route path="/welcome/:username" element={<WelcomeComponent />} />
-              <Route path="/todos" element={<ListTodo />} />
-            </Route>
+            <Route
+              path="/welcome/:username"
+              element={
+                <AuthenticatedRoute>
+                  <WelcomeComponent />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/todos"
+              element={
+                <AuthenticatedRoute>
+                  <ListTodo />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/todo/:id"
+              element={
+                <AuthenticatedRoute>
+                  <UpdateTodoComponent />
+                </AuthenticatedRoute>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

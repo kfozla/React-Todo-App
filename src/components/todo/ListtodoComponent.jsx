@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import "./TodoApp.css";
-import { retrieveTodos, retrieveTodo, deleteTodo } from "./api/TodoApiService";
+import {
+  retrieveTodos,
+  retrieveTodo,
+  deleteTodo,
+  updateTodo,
+} from "./api/TodoApiService";
 import { Button } from "../ui/button";
 import { useAuth } from "./security/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ListTodo() {
   const [todos, setTodos] = useState([]);
   const authContext = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getTodos();
@@ -34,6 +41,14 @@ export default function ListTodo() {
       })
       .catch((error) => ("error occured", error));
   }
+  function updateTodoFunc(id) {
+    navigate("/todo/" + id);
+    updateTodo(authContext.username, id)
+      .then((response) => {
+        console.log("updated todo id: " + id);
+      })
+      .catch((error) => ("error occured", error));
+  }
   return (
     <div className="ListTodoComponent">
       <h1 style={{ marginBottom: "20px", display: "inline-block" }}>
@@ -46,7 +61,8 @@ export default function ListTodo() {
             <td>Description</td>
             <td>Is done</td>
             <td>Target Date</td>
-            <td></td>
+            <td>Delete</td>
+            <td>Update</td>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +74,9 @@ export default function ListTodo() {
               <td>{todo.targetDate}</td>
               <td>
                 <Button onClick={() => deleteTodoFunc(todo.id)}>Delete</Button>
+              </td>
+              <td>
+                <Button onClick={() => updateTodoFunc(todo.id)}>Update</Button>
               </td>
             </tr>
           ))}
