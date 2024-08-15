@@ -43,11 +43,6 @@ export default function ListTodo() {
   }
   function updateTodoFunc(id) {
     navigate("/todo/" + id);
-    updateTodo(authContext.username, id)
-      .then((response) => {
-        console.log("updated todo id: " + id);
-      })
-      .catch((error) => ("error occured", error));
   }
   return (
     <div className="ListTodoComponent">

@@ -1,7 +1,7 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useParams } from "react-router-dom";
-import { retrieveTodo } from "./api/TodoApiService";
+import { retrieveTodo, updateTodo } from "./api/TodoApiService";
 import { useEffect, useState } from "react";
 import { useAuth } from "./security/AuthContext";
 import DatePicker from "react-datepicker";
@@ -14,6 +14,13 @@ export default function UpdateTodoComponent() {
   const [description, setDescription] = useState(" ");
   const [isDone, setDone] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const todo = {
+    id,
+    username: authContext.username,
+    description,
+    targetDate: selectedDate,
+    done: isDone,
+  };
 
   const handleDoneChange = (event) => {
     const value = event.target.value === "true";
@@ -22,15 +29,25 @@ export default function UpdateTodoComponent() {
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
+  function editDesc(e) {
+    setDescription(e.target.value);
+  }
 
   useEffect(() => retrieveTodos(), [id]);
   function retrieveTodos() {
     retrieveTodo(authContext.username, id)
-      .then((response) => setDescription(response.data.description))
+      .then((response) => {
+        setDescription(response.data.description);
+        setSelectedDate(response.data.targetDate);
+        setDone(response.data.done);
+      })
       .catch((error) => console.log(error));
   }
-  function editDesc(e) {
-    setDescription(e.target.value);
+
+  function handleSubmit() {
+    updateTodo(authContext.username, id, todo)
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
   }
 
   return (
@@ -49,7 +66,12 @@ export default function UpdateTodoComponent() {
         <div>
           <label>Is it done:</label>
           <div>
-            <select name="isDone" id="isDone" onChange={handleDoneChange}>
+            <select
+              name="isDone"
+              id="isDone"
+              onChange={handleDoneChange}
+              value={isDone}
+            >
               <option value="false">False</option>
               <option value="true">True</option>
             </select>
@@ -62,9 +84,10 @@ export default function UpdateTodoComponent() {
             id="tgDate"
             name="date"
             onChange={handleDateChange}
+            value={selectedDate}
           />
         </div>
-        <Button className="updateBtn" onClick={retrieveTodos}>
+        <Button className="updateBtn" onClick={handleSubmit}>
           Submit
         </Button>
       </div>
