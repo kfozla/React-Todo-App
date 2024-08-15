@@ -1,19 +1,18 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { retrieveTodo, updateTodo } from "./api/TodoApiService";
+import { addTodo, retrieveTodo, updateTodo } from "./api/TodoApiService";
 import { useEffect, useState } from "react";
 import { useAuth } from "./security/AuthContext";
 import DatePicker from "react-datepicker";
 import "./TodoApp.css";
 import "react-datepicker/dist/react-datepicker.css";
-
-export default function UpdateTodoComponent() {
+export default function AddTodoComponent() {
   const authContext = useAuth();
   const { id } = useParams();
   const [description, setDescription] = useState(" ");
   const [isDone, setDone] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState();
   const navigate = useNavigate();
   const todo = {
     id,
@@ -46,12 +45,11 @@ export default function UpdateTodoComponent() {
   }
 
   function handleSubmit() {
-    updateTodo(authContext.username, id, todo)
+    addTodo(authContext.username, todo)
       .then((response) => console.log(response))
       .catch((error) => console.log(error));
     navigate("/todos");
   }
-
   return (
     <div>
       <h1>Enter Details</h1>

@@ -44,6 +44,9 @@ export default function ListTodo() {
   function updateTodoFunc(id) {
     navigate("/todo/" + id);
   }
+  function addTodoFunc() {
+    navigate("/add-todo");
+  }
   return (
     <div className="ListTodoComponent">
       <h1 style={{ marginBottom: "20px", display: "inline-block" }}>
@@ -77,6 +80,9 @@ export default function ListTodo() {
           ))}
         </tbody>
       </table>
+      <Button className="addBtn" onClick={addTodoFunc}>
+        Add New Todo
+      </Button>
     </div>
   );
 }

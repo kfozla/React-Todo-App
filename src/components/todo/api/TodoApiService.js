@@ -13,3 +13,5 @@ export const deleteTodo = (username, id) =>
 
 export const updateTodo = (username, id, todo) =>
   apiClient.put("/users/" + username + "/todos/" + id, todo);
+export const addTodo = (username, todo) =>
+  apiClient.post("/users/" + username + "/addTodo", todo);

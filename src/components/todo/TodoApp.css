@@ -15,6 +15,9 @@ label {
   margin-top: 10px;
   float: right;
 }
+.addBtn {
+  margin: 20px;
+}
 
 .int {
   width: 240px;
