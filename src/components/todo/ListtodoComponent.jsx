@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import "./TodoApp.css";
-import {
-  retrieveTodos,
-  retrieveTodo,
-  deleteTodo,
-  updateTodo,
-} from "./api/TodoApiService";
+import { retrieveTodos, retrieveTodo, deleteTodo } from "./api/TodoApiService";
 import { Button } from "../ui/button";
 import { useAuth } from "./security/AuthContext";
 import { useNavigate } from "react-router-dom";
