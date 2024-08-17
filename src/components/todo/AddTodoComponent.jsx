@@ -4,7 +4,6 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { addTodo, retrieveTodo, updateTodo } from "./api/TodoApiService";
 import { useEffect, useState } from "react";
 import { useAuth } from "./security/AuthContext";
-import DatePicker from "react-datepicker";
 import "./TodoApp.css";
 import "react-datepicker/dist/react-datepicker.css";
 export default function AddTodoComponent() {

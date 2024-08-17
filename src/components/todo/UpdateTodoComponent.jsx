@@ -1,10 +1,10 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { retrieveTodo, updateTodo } from "./api/TodoApiService";
 import { useEffect, useState } from "react";
 import { useAuth } from "./security/AuthContext";
-import DatePicker from "react-datepicker";
+
 import "./TodoApp.css";
 import "react-datepicker/dist/react-datepicker.css";
 
