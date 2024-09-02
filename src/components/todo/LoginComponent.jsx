@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useNavigate } from "react-router-dom";
@@ -6,42 +6,35 @@ import "./TodoApp.css";
 import { useAuth } from "./security/AuthContext";
 
 export default function LoginComponent() {
-  const [password, setPassword] = useState("");
-  const [authenticationValue, setAuthenticationValue] = useState(null);
   const authContext = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (authContext.isAuthenticated) {
+      navigate("/welcome/" + authContext.username);
+    }
+  }, [authContext.isAuthenticated, navigate, authContext.username]);
   function MessageComponent() {
-    if (authenticationValue) {
+    if (authContext.authenticationValue) {
       return (
         <div className="successfullAuthentication">
           Authentication Succesfull
         </div>
       );
     }
-    if (authenticationValue == null) {
+    if (authContext.authenticationValue == null) {
       return null;
     } else {
       return <div className="authenticationFailed">Authentication Failed</div>;
     }
   }
-
   function handleOnchangeName(e) {
     authContext.setUsername(e.target.value);
   }
   function handleOnchangePassword(e) {
-    setPassword(e.target.value);
+    authContext.setPassword(e.target.value);
   }
-  function authenticate() {
-    if (authContext.username === "kfozla" && password === "123") {
-      authContext.setAuthenticated(true);
-      setAuthenticationValue(true);
-      navigate("/welcome/" + authContext.username);
-    } else {
-      setAuthenticationValue(false);
-      authContext.setAuthenticated(false);
-    }
-  }
+  authContext.authenticate;
   return (
     <div className="Login">
       <div className="LoginForm">
@@ -60,12 +53,16 @@ export default function LoginComponent() {
           <Input
             type="password"
             className="int"
-            value={password}
+            value={authContext.password}
             onChange={handleOnchangePassword}
           ></Input>
         </div>
         <div>
-          <Button name="login" className="btn" onClick={authenticate}>
+          <Button
+            name="login"
+            className="btn"
+            onClick={authContext.authenticate}
+          >
             Login
           </Button>
         </div>
